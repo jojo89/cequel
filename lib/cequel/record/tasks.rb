@@ -45,13 +45,15 @@ namespace :cequel do
         rescue LoadError, NameError, RuntimeError # rubocop:disable HandleExceptions
         else
           if clazz.is_a?(Class)
-            if clazz.ancestors.include?(Cequel::Record) &&
-              binding.pry
-              
-                !migration_table_names.include?(clazz.table_name.to_sym)
+            if clazz.ancestors.include?(Cequel::Record) &&              
+              begin
+              !migration_table_names.include?(clazz.table_name.to_sym)
               clazz.synchronize_schema
               migration_table_names << clazz.table_name.to_sym
               puts "Synchronized schema for #{class_name}"
+            rescue
+              binding.pry
+            end
             end
           end
         end
