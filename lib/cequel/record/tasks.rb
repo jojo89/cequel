@@ -20,7 +20,6 @@ namespace :cequel do
   desc "Synchronize all models defined in `app/models' with Cassandra " \
        "database schema"
   task :migrate => :environment do
-      binding.pry
     watch_stack = ActiveSupport::Dependencies::WatchStack.new
 
     migration_table_names = Set[]
@@ -47,6 +46,8 @@ namespace :cequel do
         else
           if clazz.is_a?(Class)
             if clazz.ancestors.include?(Cequel::Record) &&
+              binding.pry
+              
                 !migration_table_names.include?(clazz.table_name.to_sym)
               clazz.synchronize_schema
               migration_table_names << clazz.table_name.to_sym
