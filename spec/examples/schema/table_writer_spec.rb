@@ -11,14 +11,16 @@ describe Cequel::Schema::TableWriter do
       cequel.schema.drop_table(:posts)
     end
 
-    describe 'with static column' do
-      it 'should create a static column' do
+    context 'with static column' do
+      it 'creates a static column' do
         cequel.schema.create_table(:posts) do
           key :blog_permalink, :ascii
           key :id, :uuid, :desc
           column :blog_title, :text, static: true
+          column :content, :text
         end
         table.data_column(:blog_title).static?.should == true
+        table.data_column(:content).static?.should == false
       end
     end
 

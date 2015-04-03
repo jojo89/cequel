@@ -188,7 +188,7 @@ module Cequel
       #
       # @param (see Column#initialize)
       # @param index_name [Symbol] name this column's secondary index
-      # @option options [Boolean] :static (false) whether this column is static
+      # @option options [Hash] :static (false) whether this column is static
       #
       def initialize(name, type, index_name = nil, options = {})
         super(name, type)
