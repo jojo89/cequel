@@ -11,16 +11,28 @@ describe Cequel::Schema::TableWriter do
       cequel.schema.drop_table(:posts)
     end
 
-    context 'with static column' do
-      it 'creates a static column' do
+    context 'with a static column' do
+      before do
         cequel.schema.create_table(:posts) do
           key :blog_permalink, :ascii
           key :id, :uuid, :desc
-          column :blog_title, :text, static: true
+          column :static_column, :text, :static => true
+          column :non_static_column, :text, :static => false
           column :content, :text
         end
-        expect(table.data_column(:blog_title)).to be_static
-        expect(table.data_column(:content)).to_not be_static
+      end
+      it 'creates a static column' do
+        expect(table.data_column(:static_column)).to be_static
+      end
+      context 'and a column that is explicitly non-static' do
+        it 'creates a non-static column' do
+          expect(table.data_column(:content)).to_not be_static
+        end
+      end
+      context 'and a column that is implicitly non-static' do
+        it 'creates a non-static column' do
+          expect(table.data_column(:content)).to_not be_static
+        end
       end
     end
 
