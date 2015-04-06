@@ -10,7 +10,7 @@ describe Cequel::Schema::TableSynchronizer do
       cequel.schema.sync_table :posts do
         key :blog_subdomain, :text
         key :permalink, :text
-        column :blog_title, :text, static: true
+        column :blog_title, :text, :static => true
         column :title, :text
         column :body, :text
         column :created_at, :timestamp
@@ -24,7 +24,7 @@ describe Cequel::Schema::TableSynchronizer do
     it 'should create table' do
       expect(table.column(:title).type).to eq(Cequel::Type[:text]) #etc.
       expect(table.column(:blog_title).type).to eq(Cequel::Type[:text])
-      expect(table.column(:blog_title).static?).to eq(true)
+      expect(table.column(:blog_title)).to be_static
     end
   end
 
@@ -33,9 +33,8 @@ describe Cequel::Schema::TableSynchronizer do
       cequel.schema.create_table :posts do
         key :blog_subdomain, :text
         key :permalink, :text
-        # column :blog_title, :text, static: true
-        column :blog_description, :text, static: true
-        column :blog_title, :text, static: true
+        column :blog_description, :text, :static => true
+        column :blog_title, :text, :static => true
         column :title, :ascii, :index => true
         column :body, :ascii
         column :created_at, :timestamp
@@ -70,7 +69,7 @@ describe Cequel::Schema::TableSynchronizer do
       it 'should add new columns' do
         expect(table.column(:published_at).type).to eq(Cequel::Type[:timestamp])
         expect(table.column(:blog_description).type).to eq(Cequel::Type[:text])
-        expect(table.column(:blog_description).static?).to eq(true)
+        expect(table.column(:blog_description)).to be_static
       end
 
       it 'should add new collections' do
@@ -206,7 +205,7 @@ describe Cequel::Schema::TableSynchronizer do
            key :permalink, :text
            column :title, :ascii, :index => true
            column :body, :ascii
-           column :created_at, :timestamp, static: true
+           column :created_at, :timestamp, :static => true
            set :author_names, :text
            with :comment, 'Test Table'
          end
@@ -218,7 +217,7 @@ describe Cequel::Schema::TableSynchronizer do
           cequel.schema.sync_table :posts do
             key :blog_subdomain, :text
             key :permalink, :text
-            column :blog_title, :text, static: false
+            column :blog_title, :text, :static => false
             column :title, :ascii, :index => true
             column :body, :ascii
             column :created_at, :timestamp
