@@ -23,8 +23,8 @@ describe Cequel::Schema::TableSynchronizer do
 
     it 'should create table' do
       expect(table.column(:title).type).to eq(Cequel::Type[:text]) #etc.
-      table.column(:blog_title).type.should == Cequel::Type[:text]
-      table.column(:blog_title).static?.should == true
+      expect(table.column(:blog_title).type).to eq(Cequel::Type[:text])
+      expect(table.column(:blog_title).static?).to eq(true)
     end
   end
 
@@ -33,7 +33,7 @@ describe Cequel::Schema::TableSynchronizer do
       cequel.schema.create_table :posts do
         key :blog_subdomain, :text
         key :permalink, :text
-        column :blog_title, :text, static: true
+        # column :blog_title, :text, static: true
         column :blog_description, :text, static: true
         column :blog_title, :text, static: true
         column :title, :ascii, :index => true
@@ -69,8 +69,8 @@ describe Cequel::Schema::TableSynchronizer do
 
       it 'should add new columns' do
         expect(table.column(:published_at).type).to eq(Cequel::Type[:timestamp])
-        table.column(:blog_description).type.should == Cequel::Type[:text]
-        table.column(:blog_description).static?.should == true
+        expect(table.column(:blog_description).type).to eq(Cequel::Type[:text])
+        expect(table.column(:blog_description).static?).to eq(true)
       end
 
       it 'should add new collections' do
@@ -199,7 +199,7 @@ describe Cequel::Schema::TableSynchronizer do
         }.to raise_error(Cequel::InvalidSchemaMigration)
       end
 
-      it 'should not allow changing a column to static' do
+      it 'does not allow changing a column to static' do
         expect {
          cequel.schema.sync_table :posts do
            key :blog_subdomain, :text
@@ -213,7 +213,7 @@ describe Cequel::Schema::TableSynchronizer do
         }.to raise_error(Cequel::InvalidSchemaMigration)
       end
 
-      it 'should not allow changing a column from static' do
+      it 'does not allow changing a column from static' do
         expect {
           cequel.schema.sync_table :posts do
             key :blog_subdomain, :text

@@ -19,8 +19,8 @@ describe Cequel::Schema::TableWriter do
           column :blog_title, :text, static: true
           column :content, :text
         end
-        table.data_column(:blog_title).static?.should == true
-        table.data_column(:content).static?.should == false
+        expect(table.data_column(:blog_title)).to be_static
+        expect(table.data_column(:content)).to_not be_static
       end
     end
 
